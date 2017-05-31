@@ -318,14 +318,30 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-  (add-hook 'flycheck-mode-hook 'codefalling//reset-eslint-rc)
+  (add-hook 'flycheck-mode-hook 'codefalling/reset-eslint-rc)
   (add-hook 'flycheck-mode-hook 'my/use-eslint-from-node-modules)
   (global-company-mode t)
-  )
+  (spacemacs/declare-prefix-for-mode 'js2-mode "me" "eslint")
+  (spacemacs/set-leader-keys-for-minor-mode 'js2-mode "ef" 'eslint-fix))
 
-(defun codefalling//reset-eslint-rc ()
+(defun eslint-fix ()
+  "Format the current file with ESLint."
+  (interactive)
+  (let ((eslint-path (if (projectile-project-p)
+                         (concat (projectile-project-root) "node_modules/eslint/bin/eslint.js"))))
+    (progn (save-current-buffer-if-needed) 
+           (call-process eslint-path nil "*ESLint Errors*" nil "--fix" buffer-file-name)
+           (revert-buffer t t t))
+    ))
+
+(defun save-current-buffer-if-needed ()
+  (interactive)
+  (when (and (buffer-file-name) (buffer-modified-p))
+    (save-buffer)))
+
+(defun codefalling/reset-eslint-rc ()
   (let ((rc-path (if (projectile-project-p)
-                   (concat (projectile-project-root) ".eslintrc"))))
+                     (concat (projectile-project-root) ".eslintrc"))))
 
     (if (file-exists-p rc-path)
         (progn
