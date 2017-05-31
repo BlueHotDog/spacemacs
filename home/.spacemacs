@@ -31,7 +31,11 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     javascript
+     (javascript :variables
+                 javascript-disable-tern-port-files nil
+                 js2-basic-offset 2
+                 js-indent-level 2
+                 )
      markdown
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
@@ -93,7 +97,7 @@ values."
    ;; when the current branch is not `develop'. Note that checking for
    ;; new versions works via git commands, thus it calls GitHub services
    ;; whenever you start Emacs. (default nil)
-   dotspacemacs-check-for-update nil
+   dotspacemacs-check-for-update t
    ;; If non-nil, a form that evaluates to a package directory. For example, to
    ;; use different package directories for different Emacs versions, set this
    ;; to `emacs-version'.
@@ -262,7 +266,7 @@ values."
    ;;                       text-mode
    ;;   :size-limit-kb 1000)
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers `relative
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -272,7 +276,7 @@ values."
    ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
    ;; over any automatically added closing parenthesis, bracket, quote, etc…
    ;; This can be temporary disabled by pressing `C-q' before `)'. (default nil)
-   dotspacemacs-smart-closing-parenthesis nil
+   dotspacemacs-smart-closing-parenthesis t
    ;; Select a scope to highlight delimiters. Possible values are `any',
    ;; `current', `all' or `nil'. Default is `all' (highlight any scope and
    ;; emphasis the current one). (default 'all)
@@ -294,6 +298,7 @@ values."
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
    dotspacemacs-whitespace-cleanup nil
+   x-gtk-use-system-tooltips nil
    ))
 
 
@@ -315,11 +320,12 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   (add-hook 'flycheck-mode-hook 'codefalling//reset-eslint-rc)
   (add-hook 'flycheck-mode-hook 'my/use-eslint-from-node-modules)
+  (global-company-mode t)
   )
 
 (defun codefalling//reset-eslint-rc ()
   (let ((rc-path (if (projectile-project-p)
-                     (concat (projectile-project-root) ".eslintrc"))))
+                   (concat (projectile-project-root) ".eslintrc"))))
 
     (if (file-exists-p rc-path)
         (progn
@@ -333,3 +339,20 @@ you should place your code here."
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
+(with-eval-after-load "company"
+  (global-set-key (kbd "S-SPC") 'company-complete))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
+ '(evil-want-Y-yank-to-eol nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
