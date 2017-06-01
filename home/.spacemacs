@@ -322,7 +322,8 @@ you should place your code here."
   (add-hook 'flycheck-mode-hook 'codefalling/reset-eslint-rc)
   (add-hook 'flycheck-mode-hook 'my/use-eslint-from-node-modules)
   (global-company-mode t)
-  (setq paradox-github-token "831d32bbad2aae29845361d7a851bebdac164abd")
+  (setq js2-mode-show-parse-errors nil)
+  (setq js2-mode-show-strict-warnings nil)
   (spacemacs/declare-prefix-for-mode 'js2-mode "me" "eslint")
   (spacemacs/set-leader-keys-for-minor-mode 'js2-mode "ef" 'eslint-fix))
 
