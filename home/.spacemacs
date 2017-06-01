@@ -34,6 +34,7 @@ values."
      (javascript :variables
                  javascript-disable-tern-port-files nil
                  js2-basic-offset 2
+                 js2-compiler-strict-mode nil
                  js-indent-level 2
                  )
      markdown
@@ -321,6 +322,7 @@ you should place your code here."
   (add-hook 'flycheck-mode-hook 'codefalling/reset-eslint-rc)
   (add-hook 'flycheck-mode-hook 'my/use-eslint-from-node-modules)
   (global-company-mode t)
+  (setq paradox-github-token "831d32bbad2aae29845361d7a851bebdac164abd")
   (spacemacs/declare-prefix-for-mode 'js2-mode "me" "eslint")
   (spacemacs/set-leader-keys-for-minor-mode 'js2-mode "ef" 'eslint-fix))
 
